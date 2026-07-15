@@ -54,8 +54,12 @@ class Config:
     
     # Admin credentials from env
     ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME')
-    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
+    ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'admin@123')
     
+    # Supabase Configuration
+    SUPABASE_URL = os.getenv('SUPABASE_URL')
+    SUPABASE_KEY = os.getenv('SUPABASE_KEY')
+
     if is_prod and (not ADMIN_USERNAME or not ADMIN_PASSWORD):
         raise ValueError("ADMIN_USERNAME and ADMIN_PASSWORD must be set in production")
         

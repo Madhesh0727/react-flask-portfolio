@@ -13,9 +13,7 @@ class ProjectForm(FlaskForm):
         ('Mobile App', 'Mobile App'),
         ('Other', 'Other')
     ], validators=[DataRequired()])
-    image = StringField('Image URLs (comma separated)', validators=[
-        Optional(), Length(max=1000)
-    ])
+    image = FileField('Project Image')
     tech_stack = StringField('Technologies (comma separated)', validators=[Optional(), Length(max=500)])
     github_link = StringField('GitHub URL', validators=[Optional(), URL()])
     demo_link = StringField('Live Demo URL', validators=[Optional(), URL()])

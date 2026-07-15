@@ -10,7 +10,7 @@ class SettingsForm(FlaskForm):
     bio = TextAreaField('Who I Am (Bio)', validators=[Optional(), Length(max=1000)])
     what_i_do = TextAreaField('What I Do (One item per line)', validators=[Optional(), Length(max=2000)])
     tagline = StringField('Tagline', validators=[Optional(), Length(max=200)])
-    profile_image = StringField('Profile Image URL', validators=[Optional(), URL()])
+    profile_image = FileField('Profile Image')
     theme_color = StringField('Theme Color (hex)', validators=[Optional(), Length(max=7)], default='#00ff00')
     
     # Admin Security

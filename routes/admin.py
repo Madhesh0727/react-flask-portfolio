@@ -10,8 +10,9 @@ from forms.experience_forms import ExperienceForm
 from forms.certification_forms import CertificationForm
 from app import db
 from utils.decorators import admin_required
-from utils.helpers import save_file, delete_file, create_slug
+from utils.helpers import delete_file, create_slug
 from utils.site_data import clear_site_cache
+from utils.storage import upload_to_supabase
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -59,8 +60,10 @@ def new_project():
             category=form.category.data
         )
         
-        if form.image.data:
-            project.image = form.image.data
+        if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
+            url = upload_to_supabase(form.image.data)
+            if url:
+                project.image = url
         
         db.session.add(project)
         db.session.commit()
@@ -86,8 +89,10 @@ def edit_project(id):
         project.featured = form.featured.data
         project.category = form.category.data
         
-        if form.image.data:
-            project.image = form.image.data
+        if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
+            url = upload_to_supabase(form.image.data)
+            if url:
+                project.image = url
         
         db.session.commit()
         flash('Project updated successfully!', 'success')
@@ -138,8 +143,10 @@ def new_blog():
             category=form.category.data
         )
         
-        if form.image.data:
-            post.image = form.image.data
+        if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
+            url = upload_to_supabase(form.image.data)
+            if url:
+                post.image = url
         
         db.session.add(post)
         db.session.commit()
@@ -162,8 +169,10 @@ def edit_blog(id):
         post.published = form.published.data
         post.category = form.category.data
         
-        if form.image.data:
-            post.image = form.image.data
+        if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
+            url = upload_to_supabase(form.image.data)
+            if url:
+                post.image = url
         
         db.session.commit()
         flash('Blog post updated successfully!', 'success')
@@ -457,11 +466,15 @@ def settings():
         settings.specialty = form.specialty.data
         settings.resume_template = form.resume_template.data
         
-        if form.profile_image.data:
-            settings.profile_image = form.profile_image.data
+        if form.profile_image.data and hasattr(form.profile_image.data, 'filename') and form.profile_image.data.filename:
+            url = upload_to_supabase(form.profile_image.data)
+            if url:
+                settings.profile_image = url
         
-        if form.resume.data:
-            settings.resume_path = form.resume.data
+        if form.resume.data and hasattr(form.resume.data, 'filename') and form.resume.data.filename:
+            url = upload_to_supabase(form.resume.data)
+            if url:
+                settings.resume_path = url
         
         if form.admin_username.data and form.admin_username.data != current_user.username:
             current_user.username = form.admin_username.data

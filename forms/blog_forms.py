@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField
+from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField, FileField
 from wtforms.validators import DataRequired, Length, Optional
 
 class BlogPostForm(FlaskForm):
@@ -13,8 +13,6 @@ class BlogPostForm(FlaskForm):
         ('News', 'News'),
         ('Other', 'Other')
     ], validators=[DataRequired()])
-    image = StringField('Image/Video URLs (comma separated)', validators=[
-        Optional(), Length(max=1000)
-    ])
+    image = FileField('Featured Image')
     published = BooleanField('Publish immediately')
     submit = SubmitField('Save Post')
