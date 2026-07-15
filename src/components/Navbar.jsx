@@ -36,7 +36,7 @@ export function Navbar({ siteName, profileImage }) {
       <div className="max-w-[95%] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-5 sm:px-10 flex justify-between items-center h-[60px]">
         <Link to="/" className="font-display font-black text-lg tracking-widest text-brand-400 hover:text-white transition-colors flex items-center gap-3">
           {profileImage && (
-            <img src={profileImage} alt="Logo" className="w-8 h-8 rounded-full border border-brand-400 object-cover" />
+            <img src={profileImage.startsWith('http') ? profileImage : `${import.meta.env.VITE_API_URL || ''}${profileImage}`} alt="Logo" className="w-8 h-8 rounded-full border border-brand-400 object-cover" />
           )}
           <span>{siteName || 'MADHESH.EXE'}</span>
         </Link>

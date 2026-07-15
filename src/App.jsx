@@ -46,7 +46,8 @@ export default function App() {
   const progressWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    const apiUrl = import.meta.env.VITE_API_URL || '';
+    fetch(`${apiUrl}/api/portfolio`)
       .then(r => { if (!r.ok) throw new Error('API_ERROR_' + r.status); return r.json(); })
       .then(json => { setData(json); setLoading(false); })
       .catch(err => { setError(err.message); setLoading(false); });
