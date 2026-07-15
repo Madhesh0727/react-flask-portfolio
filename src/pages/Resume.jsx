@@ -118,7 +118,7 @@ export function Resume({ settings, skills, experience, education, certifications
             {/* Avatar */}
             {settings.profile_image && (
               <img
-                src={settings.profile_image}
+                src={settings.profile_image.startsWith('http') ? settings.profile_image : `${import.meta.env.VITE_API_URL || ''}${settings.profile_image}`}
                 alt={settings.owner_name}
                 className="w-20 h-20 object-cover rounded border-2 border-brand-400/60 print:border-gray-400 shrink-0 grayscale-[20%] print:grayscale-0"
               />

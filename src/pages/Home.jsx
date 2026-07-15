@@ -137,7 +137,7 @@ export function Home({ settings }) {
               {/* Image */}
               <div className="w-full h-full overflow-hidden border-2 border-brand-400/60 relative rounded-inherit"
                 style={{ boxShadow: '0 0 40px rgba(0,240,255,0.2), 0 0 80px rgba(0,240,255,0.05)' }}>
-                <img src={settings.profile_image} alt={settings.owner_name}
+                <img src={settings.profile_image.startsWith('http') ? settings.profile_image : `${import.meta.env.VITE_API_URL || ''}${settings.profile_image}`} alt={settings.owner_name}
                   className="w-full h-full object-cover filter hover:grayscale-0 grayscale-[30%] transition-all duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                 {/* Scan line animation on image */}
