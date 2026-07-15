@@ -61,9 +61,11 @@ def new_project():
         )
         
         if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
-            url = upload_to_supabase(form.image.data)
+            url, error = upload_to_supabase(form.image.data)
             if url:
                 project.image = url
+            else:
+                flash(f'Error uploading image: {error}', 'danger')
         
         db.session.add(project)
         db.session.commit()
@@ -90,9 +92,11 @@ def edit_project(id):
         project.category = form.category.data
         
         if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
-            url = upload_to_supabase(form.image.data)
+            url, error = upload_to_supabase(form.image.data)
             if url:
                 project.image = url
+            else:
+                flash(f'Error uploading image: {error}', 'danger')
         
         db.session.commit()
         flash('Project updated successfully!', 'success')
@@ -144,9 +148,11 @@ def new_blog():
         )
         
         if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
-            url = upload_to_supabase(form.image.data)
+            url, error = upload_to_supabase(form.image.data)
             if url:
                 post.image = url
+            else:
+                flash(f'Error uploading image: {error}', 'danger')
         
         db.session.add(post)
         db.session.commit()
@@ -170,9 +176,11 @@ def edit_blog(id):
         post.category = form.category.data
         
         if form.image.data and hasattr(form.image.data, 'filename') and form.image.data.filename:
-            url = upload_to_supabase(form.image.data)
+            url, error = upload_to_supabase(form.image.data)
             if url:
                 post.image = url
+            else:
+                flash(f'Error uploading image: {error}', 'danger')
         
         db.session.commit()
         flash('Blog post updated successfully!', 'success')
@@ -467,14 +475,18 @@ def settings():
         settings.resume_template = form.resume_template.data
         
         if form.profile_image.data and hasattr(form.profile_image.data, 'filename') and form.profile_image.data.filename:
-            url = upload_to_supabase(form.profile_image.data)
+            url, error = upload_to_supabase(form.profile_image.data)
             if url:
                 settings.profile_image = url
+            else:
+                flash(f'Error uploading profile image: {error}', 'danger')
         
         if form.resume.data and hasattr(form.resume.data, 'filename') and form.resume.data.filename:
-            url = upload_to_supabase(form.resume.data)
+            url, error = upload_to_supabase(form.resume.data)
             if url:
                 settings.resume_path = url
+            else:
+                flash(f'Error uploading resume: {error}', 'danger')
         
         if form.admin_username.data and form.admin_username.data != current_user.username:
             current_user.username = form.admin_username.data

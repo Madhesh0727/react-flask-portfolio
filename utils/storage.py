@@ -16,15 +16,15 @@ def init_supabase():
 def upload_to_supabase(file, bucket_name='portfolio-images'):
     """
     Uploads a Werkzeug FileStorage object to Supabase storage.
-    Returns the public URL if successful, otherwise None.
+    Returns (public_url, error_message)
     """
     if not file or not file.filename:
-        return None
+        return None, "No file provided"
 
     supabase: Client = init_supabase()
     if not supabase:
         print("Supabase not configured.")
-        return None
+        return None, "Supabase environment variables are missing."
 
     # Generate a unique filename
     original_filename = secure_filename(file.filename)
@@ -33,6 +33,7 @@ def upload_to_supabase(file, bucket_name='portfolio-images'):
 
     try:
         # Read file bytes
+        file.seek(0)
         file_bytes = file.read()
         
         # Upload to Supabase Storage
@@ -44,8 +45,9 @@ def upload_to_supabase(file, bucket_name='portfolio-images'):
         
         # Get public URL
         public_url = supabase.storage.from_(bucket_name).get_public_url(unique_filename)
-        return public_url
+        return public_url, None
         
     except Exception as e:
         print(f"Error uploading to Supabase: {e}")
-        return None
+        return None, str(e)
+

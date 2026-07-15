@@ -25,7 +25,7 @@ def get_portfolio():
         'profile_image': (
             settings.profile_image
             if settings and settings.profile_image
-            else "/default_avatar.png"
+            else f"https://ui-avatars.com/api/?name={settings.owner_name.replace(' ', '+') if settings and settings.owner_name else 'Dev'}&background=random"
         ),
     }
 
