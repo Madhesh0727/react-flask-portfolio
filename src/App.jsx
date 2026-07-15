@@ -10,13 +10,7 @@ import { SmoothScroll } from './components/animations/SmoothScroll';
 import { CustomCursor } from './components/animations/CustomCursor';
 import { ScrollNav } from './components/ScrollNav';
 
-import { Home } from './pages/Home';
-import { About } from './pages/About';
-import { Projects } from './pages/Projects';
-import { Skills } from './pages/Skills';
-import { Experience } from './pages/Experience';
-import { Blog } from './pages/Blog';
-import { Contact } from './pages/Contact';
+import { SinglePage } from './pages/SinglePage';
 import { Resume } from './pages/Resume';
 import { NotFound } from './pages/NotFound';
 
@@ -91,13 +85,7 @@ export default function App() {
           <main className="relative z-10 max-w-[95%] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-5 sm:px-10 flex-grow w-full pt-6">
             <PageTransition>
               <Routes>
-                <Route path="/" element={<Home settings={settings} />} />
-                <Route path="/about" element={<About settings={settings} />} />
-                <Route path="/projects" element={<Projects projects={projects} settings={settings} />} />
-                <Route path="/skills" element={<Skills skills={skills} settings={settings} />} />
-                <Route path="/experience" element={<Experience experience={experience} education={education} certifications={certifications} settings={settings} />} />
-                <Route path="/blog" element={<Blog blog={blog} settings={settings} />} />
-                <Route path="/contact" element={<Contact settings={settings} />} />
+                <Route path="/" element={<SinglePage data={data} />} />
                 <Route path="/resume" element={<Resume settings={settings} skills={skills} experience={experience} education={education} certifications={certifications} projects={projects} />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

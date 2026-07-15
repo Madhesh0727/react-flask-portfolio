@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Icons } from './Icons';
@@ -7,6 +7,7 @@ import { Magnetic } from './animations/Magnetic';
 export function Navbar({ siteName, profileImage }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const { scrollY } = useScroll();
 
@@ -14,15 +15,48 @@ export function Navbar({ siteName, profileImage }) {
     setScrolled(latest > 50);
   });
 
+  useEffect(() => {
+    if (location.pathname !== '/') return;
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'projects', 'skills', 'experience', 'blog', 'contact'];
+      let current = 'home';
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 200) {
+            current = section;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check on mount
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
+
   const navLinks = [
-    { href: '/', label: 'HOME' },
-    { href: '/about', label: 'ABOUT' },
-    { href: '/projects', label: 'PROJECTS' },
-    { href: '/skills', label: 'SKILLS' },
-    { href: '/experience', label: 'EXPERIENCE' },
-    { href: '/blog', label: 'BLOG' },
-    { href: '/contact', label: 'CONTACT' },
+    { href: '#home', label: 'HOME', id: 'home' },
+    { href: '#about', label: 'ABOUT', id: 'about' },
+    { href: '#projects', label: 'PROJECTS', id: 'projects' },
+    { href: '#skills', label: 'SKILLS', id: 'skills' },
+    { href: '#experience', label: 'EXPERIENCE', id: 'experience' },
+    { href: '#blog', label: 'BLOG', id: 'blog' },
+    { href: '#contact', label: 'CONTACT', id: 'contact' },
   ];
+
+  const handleLinkClick = (e, id) => {
+    if (location.pathname !== '/') {
+      return; // Let standard link navigation happen to go to /#id
+    }
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+    }
+    setMenuOpen(false);
+  };
 
   return (
     <motion.nav 
@@ -43,18 +77,18 @@ export function Navbar({ siteName, profileImage }) {
 
         {/* Desktop */}
         <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map(({ href, label }) => (
+          {navLinks.map(({ href, label, id }) => (
             <Magnetic key={href} strength={0.3}>
-              <Link to={href}
+              <a href={`/${href}`} onClick={(e) => handleLinkClick(e, id)}
                 className={`relative text-[10px] font-display font-bold uppercase tracking-[0.2em] transition-colors group ${
-                  location.pathname === href ? 'text-brand-400' : 'text-text-muted hover:text-white'
+                  location.pathname === '/' && activeSection === id ? 'text-brand-400' : 'text-text-muted hover:text-white'
                 }`}>
                 {label}
-                {location.pathname === href && (
+                {location.pathname === '/' && activeSection === id && (
                   <motion.div layoutId="navbar-indicator" className="absolute -bottom-2 left-0 right-0 h-px bg-brand-400" />
                 )}
                 <span className="absolute -bottom-2 left-0 right-0 h-px bg-brand-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
-              </Link>
+              </a>
             </Magnetic>
           ))}
           <Magnetic strength={0.2}>
@@ -83,13 +117,13 @@ export function Navbar({ siteName, profileImage }) {
             exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}
             className="lg:hidden overflow-hidden bg-black/95 border-t border-brand-400/15">
             <div className="px-5 py-4 flex flex-col gap-3">
-              {navLinks.map(({ href, label }) => (
-                <Link key={href} to={href} onClick={() => setMenuOpen(false)}
+              {navLinks.map(({ href, label, id }) => (
+                <a key={href} href={`/${href}`} onClick={(e) => handleLinkClick(e, id)}
                   className={`text-xs font-display font-bold uppercase tracking-widest transition-colors py-2 border-b border-brand-400/10 ${
-                    location.pathname === href ? 'text-brand-400' : 'text-text-muted hover:text-brand-400'
+                    location.pathname === '/' && activeSection === id ? 'text-brand-400' : 'text-text-muted hover:text-brand-400'
                   }`}>
                   {label}
-                </Link>
+                </a>
               ))}
             </div>
           </motion.div>
