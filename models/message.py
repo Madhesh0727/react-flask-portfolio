@@ -6,6 +6,7 @@ class Message(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     subject = db.Column(db.String(200), nullable=False)
+    phone = db.Column(db.String(50), nullable=True)
     message = db.Column(db.Text, nullable=False)
     is_read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

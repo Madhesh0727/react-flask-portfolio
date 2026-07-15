@@ -18,7 +18,6 @@ def login():
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             flash(f'Welcome back, {user.username}!', 'success')
-            
             if next_page:
                 return redirect(next_page)
             return redirect(url_for('admin.dashboard'))
@@ -31,5 +30,5 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out successfully.', 'info')
-    return redirect(url_for('public.index'))
+    flash('Logged out successfully.', 'info')
+    return redirect(url_for('auth.login'))

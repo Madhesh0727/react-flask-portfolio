@@ -38,6 +38,9 @@ def sync_optional_columns():
             'excerpt': "TEXT",
             'views': "INTEGER DEFAULT 0",
         },
+        'message': {
+            'phone': "VARCHAR(50)",
+        }
     }
 
     existing_tables = set(inspector.get_table_names())
@@ -79,10 +82,14 @@ def create_app(config_class=Config):
     from routes.public import public_bp
     from routes.admin import admin_bp
     from routes.auth import auth_bp
+    from routes.api import api_bp
     
     app.register_blueprint(public_bp)
     app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(admin_bp, url_prefix='/admin-secure', name='admin_secure')
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(api_bp, url_prefix='/api')
+    csrf.exempt(api_bp)
     
     @app.context_processor
     def inject_settings():
@@ -139,7 +146,7 @@ def create_app(config_class=Config):
             db.session.commit()
             print("Default settings created")
     
-    # Security Headers for production readiness
+    # Security Headers + CORS for React frontend
     @app.after_request
     def add_security_headers(response):
         response.headers['X-Frame-Options'] = 'SAMEORIGIN'
@@ -147,6 +154,11 @@ def create_app(config_class=Config):
         response.headers['X-XSS-Protection'] = '1; mode=block'
         if app.config.get('SESSION_COOKIE_SECURE'):
             response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+        # Allow React frontend at port 3000
+        if request.path.startswith('/api') or request.path.startswith('/static'):
+            response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
         return response
 
     return app
