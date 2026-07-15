@@ -162,3 +162,6 @@ def create_app(config_class=Config):
         return response
 
     return app
+
+# Expose app instance for WSGI servers like Gunicorn
+app = create_app()
