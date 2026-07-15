@@ -7,10 +7,10 @@ from utils.site_data import get_settings_cached
 public_bp = Blueprint('public', __name__)
 
 
-# ── Redirect root to React frontend ──────────────────────────
+# ── Redirect root to Admin Dashboard ──────────────────────────
 @public_bp.route('/')
 def index():
-    return redirect('http://localhost:3000/', code=302)
+    return redirect(url_for('admin.dashboard'))
 
 
 # ── Circle favicon (used by admin panel) ─────────────────────
