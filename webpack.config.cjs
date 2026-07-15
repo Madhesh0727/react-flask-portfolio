@@ -38,6 +38,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
+    new require('webpack').DefinePlugin({
+      'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || '')
+    })
   ],
   devServer: {
     static: {
