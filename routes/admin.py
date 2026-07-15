@@ -59,15 +59,8 @@ def new_project():
             category=form.category.data
         )
         
-        images_list = []
         if form.image.data:
-            for file in form.image.data:
-                if hasattr(file, 'filename') and file.filename:
-                    filename = save_file(file, 'projects')
-                    if filename:
-                        images_list.append(filename)
-        if images_list:
-            project.image = ','.join(images_list)
+            project.image = form.image.data
         
         db.session.add(project)
         db.session.commit()
@@ -93,19 +86,8 @@ def edit_project(id):
         project.featured = form.featured.data
         project.category = form.category.data
         
-        # Replace images only if new files uploaded
-        new_images = []
         if form.image.data:
-            for file in form.image.data:
-                if hasattr(file, 'filename') and file.filename:
-                    filename = save_file(file, 'projects')
-                    if filename:
-                        new_images.append(filename)
-                        
-        if len(new_images) > 0:
-            if project.image:
-                delete_file(project.image, 'projects')
-            project.image = ','.join(new_images)
+            project.image = form.image.data
         
         db.session.commit()
         flash('Project updated successfully!', 'success')
@@ -156,15 +138,8 @@ def new_blog():
             category=form.category.data
         )
         
-        images_list = []
         if form.image.data:
-            for file in form.image.data:
-                if hasattr(file, 'filename') and file.filename:
-                    filename = save_file(file, 'blog')
-                    if filename:
-                        images_list.append(filename)
-        if images_list:
-            post.image = ','.join(images_list)
+            post.image = form.image.data
         
         db.session.add(post)
         db.session.commit()
@@ -187,18 +162,8 @@ def edit_blog(id):
         post.published = form.published.data
         post.category = form.category.data
         
-        new_images = []
         if form.image.data:
-            for file in form.image.data:
-                if hasattr(file, 'filename') and file.filename:
-                    filename = save_file(file, 'blog')
-                    if filename:
-                        new_images.append(filename)
-        
-        if len(new_images) > 0:
-            if post.image:
-                delete_file(post.image, 'blog')
-            post.image = ','.join(new_images)
+            post.image = form.image.data
         
         db.session.commit()
         flash('Blog post updated successfully!', 'success')
@@ -492,17 +457,11 @@ def settings():
         settings.specialty = form.specialty.data
         settings.resume_template = form.resume_template.data
         
-        if form.profile_image.data and hasattr(form.profile_image.data, 'filename') and form.profile_image.data.filename:
-            if settings.profile_image:
-                delete_file(settings.profile_image, 'profile')
-            filename = save_file(form.profile_image.data, 'profile')
-            settings.profile_image = filename
+        if form.profile_image.data:
+            settings.profile_image = form.profile_image.data
         
-        if form.resume.data and hasattr(form.resume.data, 'filename') and form.resume.data.filename:
-            if settings.resume_path:
-                delete_file(settings.resume_path, 'resume')
-            filename = save_file(form.resume.data, 'resume')
-            settings.resume_path = filename
+        if form.resume.data:
+            settings.resume_path = form.resume.data
         
         if form.admin_username.data and form.admin_username.data != current_user.username:
             current_user.username = form.admin_username.data

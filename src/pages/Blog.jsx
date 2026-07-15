@@ -32,7 +32,7 @@ export function Blog({ blog, settings }) {
                   <article className="cyber-panel h-full group hover:border-brand-400/60 transition-all duration-500 overflow-hidden flex flex-col bg-black/60 hover:shadow-[0_0_25px_rgba(0,240,255,0.1)]">
                     {post.image && (
                       <div className="h-44 overflow-hidden relative">
-                        <img src={`/static/uploads/blog/${post.image}`} alt={post.title}
+                        <img src={post.image.startsWith('http') ? post.image : `${import.meta.env.VITE_API_URL || ''}/static/uploads/blog/${post.image}`} alt={post.title}
                           className="w-full h-full object-cover grayscale-[70%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 ease-out" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                         <div className="absolute inset-0 -translate-x-[150%] skew-x-[-25deg] bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:animate-sweep" />

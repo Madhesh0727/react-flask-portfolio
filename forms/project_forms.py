@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import MultipleFileField, FileAllowed
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField
 from wtforms.validators import DataRequired, Length, URL, Optional
 
@@ -14,9 +13,8 @@ class ProjectForm(FlaskForm):
         ('Mobile App', 'Mobile App'),
         ('Other', 'Other')
     ], validators=[DataRequired()])
-    image = MultipleFileField('Project Images', validators=[
-        Optional(),
-        FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'svg'], 'Images only!')
+    image = StringField('Image URLs (comma separated)', validators=[
+        Optional(), Length(max=1000)
     ])
     tech_stack = StringField('Technologies (comma separated)', validators=[Optional(), Length(max=500)])
     github_link = StringField('GitHub URL', validators=[Optional(), URL()])

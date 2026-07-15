@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, TextAreaField, SubmitField, PasswordField, SelectField
 from wtforms.validators import Optional, Email, URL, Length
 
@@ -11,10 +10,7 @@ class SettingsForm(FlaskForm):
     bio = TextAreaField('Who I Am (Bio)', validators=[Optional(), Length(max=1000)])
     what_i_do = TextAreaField('What I Do (One item per line)', validators=[Optional(), Length(max=2000)])
     tagline = StringField('Tagline', validators=[Optional(), Length(max=200)])
-    profile_image = FileField('Profile Image', validators=[
-        Optional(),
-        FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only!')
-    ])
+    profile_image = StringField('Profile Image URL', validators=[Optional(), URL()])
     theme_color = StringField('Theme Color (hex)', validators=[Optional(), Length(max=7)], default='#00ff00')
     
     # Admin Security
@@ -32,10 +28,7 @@ class SettingsForm(FlaskForm):
     specialty = StringField('Specialty (Comma separated, e.g. AI/ML, Cybersecurity)', validators=[Optional(), Length(max=200)])
     
     # Files
-    resume = FileField('Resume (PDF)', validators=[
-        Optional(),
-        FileAllowed(['pdf'], 'PDF only!')
-    ])
+    resume = StringField('Resume PDF URL', validators=[Optional(), URL()])
     resume_template = SelectField('Resume Template', choices=[
         ('resume_default.html', 'Default / Classic'),
         ('resume_modern.html', 'Modern Clean'),

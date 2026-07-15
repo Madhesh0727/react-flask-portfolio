@@ -57,7 +57,7 @@ export function Projects({ projects, settings }) {
                     {/* Image */}
                     {project.image && (
                       <div className="h-48 overflow-hidden relative">
-                        <img src={`/static/uploads/projects/${project.image}`} alt={project.title}
+                        <img src={project.image.startsWith('http') ? project.image : `${import.meta.env.VITE_API_URL || ''}/static/uploads/projects/${project.image}`} alt={project.title}
                           className="w-full h-full object-cover filter grayscale-[60%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 ease-out" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
                         {project.featured && (

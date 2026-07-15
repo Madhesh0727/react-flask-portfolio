@@ -2,6 +2,8 @@ from flask import Flask, has_request_context, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from sqlalchemy import inspect, text
 from config import Config
 import os
@@ -10,7 +12,11 @@ import os
 db = SQLAlchemy()
 login_manager = LoginManager()
 csrf = CSRFProtect()
-
+limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
 
 def ensure_upload_folders(app):
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -72,6 +78,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    limiter.init_app(app)
     
     # Login manager settings
     login_manager.login_view = 'auth.login'
@@ -156,7 +163,16 @@ def create_app(config_class=Config):
             response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
         # Allow cross-origin requests for API and static files
         if request.path.startswith('/api') or request.path.startswith('/static'):
-            response.headers['Access-Control-Allow-Origin'] = '*'
+            origin = request.headers.get('Origin')
+            allowed_origins = [
+                'https://react-flask-portfolio.vercel.app', 
+                'http://localhost:5173'
+            ]
+            if not app.config.get('is_prod') or origin in allowed_origins:
+                response.headers['Access-Control-Allow-Origin'] = origin if origin else '*'
+            else:
+                response.headers['Access-Control-Allow-Origin'] = 'https://react-flask-portfolio.vercel.app'
+            
             response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
             response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
         return response

@@ -23,7 +23,7 @@ def get_portfolio():
         'site_name': settings.site_name if settings else 'MADHESH.EXE',
         'resume_template': settings.resume_template if settings else 'resume_default.html',
         'profile_image': (
-            f"/static/uploads/profile/{settings.profile_image}"
+            settings.profile_image
             if settings and settings.profile_image
             else "/default_avatar.png"
         ),
