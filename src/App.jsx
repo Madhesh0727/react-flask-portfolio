@@ -11,6 +11,13 @@ import { CustomCursor } from './components/animations/CustomCursor';
 import { ScrollNav } from './components/ScrollNav';
 
 import { SinglePage } from './pages/SinglePage';
+import { Home } from './pages/Home';
+import { About } from './pages/About';
+import { Projects } from './pages/Projects';
+import { Skills } from './pages/Skills';
+import { Experience } from './pages/Experience';
+import { Blog } from './pages/Blog';
+import { Contact } from './pages/Contact';
 import { Resume } from './pages/Resume';
 import { NotFound } from './pages/NotFound';
 
@@ -86,6 +93,12 @@ export default function App() {
             <PageTransition>
               <Routes>
                 <Route path="/" element={<SinglePage data={data} />} />
+                <Route path="/about" element={<About settings={settings} />} />
+                <Route path="/projects" element={<Projects projects={projects} settings={settings} />} />
+                <Route path="/skills" element={<Skills skills={skills} settings={settings} />} />
+                <Route path="/experience" element={<Experience experience={experience} education={education} certifications={certifications} settings={settings} />} />
+                <Route path="/blog" element={<Blog blog={blog} settings={settings} />} />
+                <Route path="/contact" element={<Contact settings={settings} />} />
                 <Route path="/resume" element={<Resume settings={settings} skills={skills} experience={experience} education={education} certifications={certifications} projects={projects} />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
