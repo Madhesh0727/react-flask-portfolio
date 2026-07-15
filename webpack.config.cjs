@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/main.jsx',
@@ -38,7 +39,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
-    new require('webpack').DefinePlugin({
+    new webpack.DefinePlugin({
       'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || '')
     })
   ],
