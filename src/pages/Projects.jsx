@@ -102,6 +102,10 @@ export function Projects({ projects, settings }) {
                       )}
 
                       <div className="flex gap-5 mt-auto pt-4 border-t border-brand-400/20">
+                        <a href={`/projects/${project.id}`}
+                          className="flex items-center gap-1.5 text-[10px] font-mono text-brand-400 hover:text-brand-500 uppercase tracking-wider transition-colors group/link">
+                          <Icons.ChevronRight /> <span className="group-hover/link:underline underline-offset-4">Details</span>
+                        </a>
                         {project.github_link && (
                           <a href={project.github_link} target="_blank" rel="noreferrer"
                             className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted hover:text-brand-400 uppercase tracking-wider transition-colors group/link">
@@ -111,7 +115,7 @@ export function Projects({ projects, settings }) {
                         {project.demo_link && (
                           <a href={project.demo_link} target="_blank" rel="noreferrer"
                             className="flex items-center gap-1.5 text-[10px] font-mono text-brand-400 hover:text-brand-500 uppercase tracking-wider transition-colors group/link">
-                            <Icons.ExternalLink /> <span className="group-hover/link:underline underline-offset-4">Live Demo</span>
+                            <Icons.ExternalLink /> <span className="group-hover/link:underline underline-offset-4">Demo</span>
                           </a>
                         )}
                       </div>

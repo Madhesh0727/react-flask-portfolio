@@ -100,6 +100,7 @@ def get_portfolio():
             'title': b.title,
             'slug': b.slug,
             'excerpt': b.excerpt or '',
+            'content': b.content or '',
             'category': b.category,
             'image': b.get_primary_image() or '',
             'created_at': b.created_at.strftime('%b %d, %Y') if b.created_at else '',

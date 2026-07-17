@@ -166,7 +166,9 @@ def create_app(config_class=Config):
             origin = request.headers.get('Origin')
             allowed_origins = [
                 'https://react-flask-portfolio.vercel.app', 
-                'http://localhost:5173'
+                'http://localhost:5173',
+                'https://www.madheshrasu.in',
+                'https://madheshrasu.in'
             ]
             if not app.config.get('is_prod') or origin in allowed_origins:
                 response.headers['Access-Control-Allow-Origin'] = origin if origin else '*'
@@ -176,6 +178,10 @@ def create_app(config_class=Config):
             response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
             response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
         return response
+
+    # Start keep-awake thread
+    from keep_awake import start_keep_awake
+    start_keep_awake()
 
     return app
 
